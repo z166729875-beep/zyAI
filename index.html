@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>视频示例</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y147JGP4F7"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-Y147JGP4F7');
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    background-color: #f8f9fa;
+    font-family: sans-serif;
+    padding: 0 12px;
+}
+/* 顶部标题极简 */
+.top-head{
+    text-align: center;
+    padding: 10px 0 5px;
+}
+.top-head h1{
+    font-size: 18px;
+    color: #222;
+    font-weight: 500;
+}
+.top-head p{
+    font-size: 12px;
+    color: #999;
+    margin-top: 2px;
+}
+/* 视频卡片布局 */
+.video-wrap{
+    max-width: 700px;
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+/* 9:16卡片，视频做封面 */
+.video-card{
+    width: 82px;
+    aspect-ratio: 9 / 16;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    background: #eee;
+    position: relative;
+}
+.video-card video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* 遮罩层 */
+.black-mask{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: none;
+    z-index: 999;
+}
+/* 悬浮居中播放视频 非全屏 */
+.play-big{
+    position: fixed;
+    aspect-ratio: 9/16;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+    transition: all 0.3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    object-fit: contain;
+    max-height: 80vh;
+    max-width: 80vw;
+}
+/* 底部大篇幅介绍区域 */
+.footer-area{
+    max-width: 550px;
+    margin: 0 auto 20px;
+    text-align: center;
+    padding: 25px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.footer-tip{
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.down-link{
+    display: inline-block;
+    padding: 10px 30px;
+    background: #10b981;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 15px;
+}
+</style>
+</head>
+<body>
+
+<div class="top-head">
+    <h1>视频示例</h1>
+    <p>点击卡片预览播放</p>
+</div>
+
+<div class="video-wrap">
+    <div class="video-card" onclick="openVideo(this,0)">
+        <video muted loop playsinline><source src="1.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,1)">
+        <video muted loop playsinline><source src="2.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,2)">
+        <video muted loop playsinline><source src="3.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,3)">
+        <video muted loop playsinline><source src="4.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,4)">
+        <video muted loop playsinline><source src="5.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,5)">
+        <video muted loop playsinline><source src="6.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,6)">
+        <video muted loop playsinline><source src="7.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,7)">
+        <video muted loop playsinline><source src="8.mp4"></video>
+    </div>
+    <div class="video-card" onclick="openVideo(this,8)">
+        <video muted loop playsinline><source src="9.mp4"></video>
+    </div>
+</div>
+
+<div class="black-mask" id="mask"></div>
+<video class="play-big" id="mainVideo" controls playsinline></video>
+
+<div class="footer-area">
+    <div class="footer-tip">
+        这里填写详细介绍内容，空间充足可自由编辑多行文字，
+        内容仅供学习交流使用，请勿私自转载商用，
+        需要资源直接点击下方网盘链接获取即可。
+    </div>
+    <a href="https://pan.quark.cn/" class="down-link" target="_blank">网盘下载入口</a>
+</div>
+
+<script>
+let targetRect;
+let isVideoOpen = false;
+const videoList = [
+    "1.mp4","2.mp4","3.mp4",
+    "4.mp4","5.mp4","6.mp4",
+    "7.mp4","8.mp4","9.mp4"
+];
+const mask = document.getElementById('mask');
+const mainVideo = document.getElementById('mainVideo');
+
+// 打开视频
+function openVideo(dom, index){
+    mainVideo.pause();
+    mainVideo.currentTime = 0;
+    mainVideo.src = '';
+    targetRect = dom.getBoundingClientRect();
+    mainVideo.src = videoList[index];
+
+    mainVideo.style.left = targetRect.left + 'px';
+    mainVideo.style.top = targetRect.top + 'px';
+    mainVideo.style.width = targetRect.width + 'px';
+    mainVideo.style.height = targetRect.height + 'px';
+    mainVideo.style.transform = 'none';
+    mainVideo.style.display = 'block';
+    mask.style.display = 'block';
+    isVideoOpen = true;
+
+    setTimeout(()=>{
+        mainVideo.style.left = '50%';
+        mainVideo.style.top = '50%';
+        mainVideo.style.width = 'auto';
+        mainVideo.style.height = '75vh';
+        mainVideo.style.transform = 'translate(-50%,-50%)';
+    },10)
+    setTimeout(()=>mainVideo.play(),120);
+}
+
+// 统一关闭视频函数
+function closeVideoPlay(){
+    if(!isVideoOpen) return;
+    mainVideo.style.left = targetRect.left + 'px';
+    mainVideo.style.top = targetRect.top + 'px';
+    mainVideo.style.width = targetRect.width + 'px';
+    mainVideo.style.height = targetRect.height + 'px';
+    mainVideo.style.transform = 'none';
+
+    setTimeout(()=>{
+        mask.style.display = 'none';
+        mainVideo.style.display = 'none';
+        mainVideo.pause();
+        mainVideo.src = '';
+        isVideoOpen = false;
+    },300)
+}
+
+// 点击空白关闭
+mask.addEventListener('click',closeVideoPlay);
+
+// 手机返回手势、浏览器返回键 只关视频不退出
+window.addEventListener('popstate',function(e){
+    if(isVideoOpen){
+        e.preventDefault();
+        closeVideoPlay();
+        history.pushState({},document.title,location.href);
+    }
+});
+history.pushState({},document.title,location.href);
+</script>
+</body>
+</html>
